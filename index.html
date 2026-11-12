@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lardre – Live Gaming Streams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#140f2e; --bg2:#1e1745; --ink:#f5f2ff; --mute:#a9a1d6;
+  --pink:#ff4fa3; --cyan:#35e0ff; --sun:#ffd23f; --line:#3a2f7a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){color-scheme:light;--bg:#f6f3ff;--bg2:#e9e3ff;--ink:#1a1240;--mute:#5a4f93;--pink:#d6247f;--cyan:#0a8fb0;--sun:#b87d00;--line:#c9bff2}
+}
+:root[data-theme="dark"]{color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;line-height:1.55;overflow-x:hidden}
+.display{font-family:"Rubik Mono One",Impact,sans-serif;letter-spacing:.01em;line-height:1}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* nav */
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:2px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.logo{font-size:1.2rem;text-decoration:none}
+.logo b{color:var(--pink)}
+nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;font-weight:600}
+nav ul a{text-decoration:none;color:var(--mute)}
+nav ul a:hover{color:var(--ink)}
+.btn{display:inline-block;border:0;cursor:pointer;font:800 1rem Outfit,sans-serif;padding:13px 24px;border-radius:10px;text-decoration:none;background:var(--pink);color:#fff;box-shadow:0 5px 0 #a3185f;transition:transform .1s,box-shadow .1s}
+.btn:hover{transform:translateY(2px);box-shadow:0 3px 0 #a3185f}
+.btn:active{transform:translateY(5px);box-shadow:0 0 0 #a3185f}
+.btn.alt{background:var(--cyan);color:#06222b;box-shadow:0 5px 0 #168aa3}
+.btn.alt:hover{box-shadow:0 3px 0 #168aa3}
+@media(max-width:700px){nav ul{display:none}}
+
+/* hero */
+.hero{padding:56px 0 72px;background:
+  radial-gradient(600px 300px at 85% 10%,rgba(255,79,163,.25),transparent 70%),
+  radial-gradient(500px 300px at 5% 90%,rgba(53,224,255,.18),transparent 70%)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+.status{display:inline-flex;align-items:center;gap:10px;background:var(--bg2);border:2px solid var(--line);padding:7px 14px;border-radius:99px;font-weight:600;font-size:.95rem}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--pink);animation:pulse 1.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,79,163,.8)}100%{box-shadow:0 0 0 12px rgba(255,79,163,0)}}
+h1{font-size:clamp(2.6rem,8vw,5.2rem);margin:22px 0 18px;text-shadow:4px 4px 0 var(--pink)}
+.hero p.lead{font-size:1.2rem;color:var(--mute);max-width:46ch;margin:0 0 28px}
+.cta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:34px}
+.stats{display:flex;gap:30px;flex-wrap:wrap}
+.stats div{font-size:.95rem;color:var(--mute)}
+.stats strong{display:block;font-size:1.7rem;color:var(--sun);font-family:"Rubik Mono One",sans-serif}
+
+/* live stream mock */
+.screen{background:#0b0820;border:3px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:10px 10px 0 var(--pink)}
+.screen .bar{display:flex;justify-content:space-between;padding:10px 14px;background:var(--bg2);font-size:.85rem;font-weight:600;color:var(--mute)}
+.chat{height:300px;overflow:hidden;padding:12px 14px;display:flex;flex-direction:column;justify-content:flex-end;gap:7px;font-size:.95rem;color:#f5f2ff}
+.chat p{margin:0;animation:pop .25s ease-out}
+.chat b{margin-right:6px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.say{display:flex;gap:8px;padding:10px;background:var(--bg2)}
+.say input{flex:1;min-width:0;background:#0b0820;border:2px solid var(--line);color:#f5f2ff;border-radius:8px;padding:10px 12px;font:inherit}
+.say button{border:0;border-radius:8px;padding:0 16px;background:var(--cyan);color:#06222b;font:800 .95rem Outfit;cursor:pointer}
+
+/* sections */
+section{padding:72px 0}
+h2{font-size:clamp(1.7rem,4vw,2.4rem);margin:0 0 10px}
+.sub{color:var(--mute);margin:0 0 36px;max-width:55ch}
+.alt-bg{background:var(--bg2)}
+
+.sched{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+@media(max-width:860px){.sched{grid-template-columns:repeat(2,1fr)}}
+.day{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:14px;min-height:130px}
+.day h3{margin:0 0 8px;font-size:1rem;color:var(--mute)}
+.day.today{border-color:var(--pink);box-shadow:0 0 0 3px rgba(255,79,163,.3)}
+.day.off{opacity:.55}
+.day strong{display:block;color:var(--sun)}
+.day span{font-size:.9rem}
+.next{margin-top:26px;font-weight:600}
+.next b{color:var(--cyan);font-family:"Rubik Mono One",sans-serif}
+
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.game{border-radius:14px;padding:22px;min-height:190px;display:flex;flex-direction:column;justify-content:flex-end;border:3px solid var(--line);transition:transform .15s;position:relative;overflow:hidden}
+.game:hover{transform:rotate(-1.5deg) scale(1.03)}
+.game .ico{position:absolute;top:10px;right:14px;font-size:3.2rem;opacity:.9}
+.game h3{margin:0;font-size:1.25rem;color:#fff}
+.game p{margin:4px 0 0;font-size:.9rem;color:rgba(255,255,255,.85)}
+.g1{background:linear-gradient(160deg,#6a2cff,#2a0f8a)}
+.g2{background:linear-gradient(160deg,#ff4fa3,#8a1054)}
+.g3{background:linear-gradient(160deg,#1fb5d6,#0d4f78)}
+.g4{background:linear-gradient(160deg,#e59a00,#8a3d00)}
+
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;align-items:stretch}
+.tier{background:var(--bg);border:3px solid var(--line);border-radius:16px;padding:28px;display:flex;flex-direction:column}
+.tier.pop{border-color:var(--sun);transform:translateY(-8px)}
+.tier h3{margin:0;font-size:1.1rem}
+.price{font-family:"Rubik Mono One",sans-serif;font-size:2rem;margin:10px 0;color:var(--sun)}
+.tier ul{padding-left:18px;margin:0 0 22px;color:var(--mute);flex:1}
+
+form.join{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+form.join input{flex:1;min-width:220px;background:var(--bg);border:3px solid var(--line);color:var(--ink);border-radius:10px;padding:13px 16px;font:inherit}
+.msg{margin-top:14px;min-height:1.4em;color:var(--cyan);font-weight:600}
+
+footer{border-top:2px solid var(--line);padding:28px 0;color:var(--mute);text-align:center;font-size:.95rem}
+footer a{margin:0 10px}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="logo display" href="#top">LAR<b>DRE</b></a>
+    <ul>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#join">Support</a></li>
+    </ul>
+    <a class="btn alt" href="#join" style="padding:9px 18px;box-shadow:0 3px 0 #168aa3">Follow</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="status"><span class="dot"></span><span id="statusText">Live now: Ranked grind to Diamond</span></span>
+      <h1 class="display">Play hard.<br>Chat louder.</h1>
+      <p class="lead">I’m Lardre, a competitive FPS and co-op streamer. Join the squad for ranked climbs, chaotic custom lobbies, and a chat that never stops talking.</p>
+      <div class="cta">
+        <a class="btn" href="#join">Watch live</a>
+        <a class="btn alt" href="#schedule">See schedule</a>
+      </div>
+      <div class="stats">
+        <div><strong data-count="48200">0</strong>followers</div>
+        <div><strong data-count="1350">0</strong>avg. viewers</div>
+        <div><strong data-count="3100">0</strong>hours streamed</div>
+      </div>
+    </div>
+
+    <div class="screen" aria-label="Live chat preview">
+      <div class="bar"><span>Live chat</span><span id="viewers">1,284 watching</span></div>
+      <div class="chat" id="chat" aria-live="off"></div>
+      <form class="say" id="sayForm">
+        <input id="sayInput" placeholder="Say something to chat" maxlength="80" aria-label="Chat message">
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+</header>
+
+<section id="schedule" class="alt-bg">
+  <div class="wrap">
+    <h2 class="display">Stream schedule</h2>
+    <p class="sub">All times are in your local time zone. Schedule changes are posted on Discord first.</p>
+    <div class="sched" id="sched"></div>
+    <p class="next" id="next"></p>
+  </div>
+</section>
+
+<section id="games">
+  <div class="wrap">
+    <h2 class="display">What I play</h2>
+    <p class="sub">Mostly shooters, plus a weekly night for whatever chat votes on.</p>
+    <div class="games">
+      <div class="game g1"><span class="ico">🎯</span><h3>Apex Rivals</h3><p>Ranked solo queue, Tue and Thu</p></div>
+      <div class="game g2"><span class="ico">💥</span><h3>Neon Siege</h3><p>Squad scrims with viewers, Sat</p></div>
+      <div class="game g3"><span class="ico">🧟</span><h3>Dead Harbor</h3><p>Co-op horror, Sun night</p></div>
+      <div class="game g4"><span class="ico">🗳️</span><h3>Chat’s Choice</h3><p>You vote, I suffer, Fri</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="join" class="alt-bg">
+  <div class="wrap">
+    <h2 class="display">Join the squad</h2>
+    <p class="sub">Subscribers get custom emotes, a spot in viewer games, and a name in the credits.</p>
+    <div class="tiers">
+      <div class="tier"><h3>Rookie</h3><div class="price">Free</div>
+        <ul><li>Chat and follow</li><li>Go-live alerts</li><li>Vote on Friday’s game</li></ul>
+        <a class="btn alt" href="#email">Follow</a></div>
+      <div class="tier pop"><h3>Squad Member</h3><div class="price">$4.99</div>
+        <ul><li>Custom emotes</li><li>Ad-free viewing</li><li>Viewer game access</li><li>Private Discord channels</li></ul>
+        <a class="btn" href="#email">Subscribe</a></div>
+      <div class="tier"><h3>Legend</h3><div class="price">$24.99</div>
+        <ul><li>Everything in Squad Member</li><li>Monthly 1-on-1 coaching call</li><li>Name in end credits</li></ul>
+        <a class="btn alt" href="#email">Subscribe</a></div>
+    </div>
+
+    <h2 class="display" id="email" style="margin-top:64px;font-size:1.5rem">Get a message when I go live</h2>
+    <form class="join" id="joinForm">
+      <input type="email" id="email-in" placeholder="you@example.com" required aria-label="Email address">
+      <button class="btn" type="submit">Notify me</button>
+    </form>
+    <div class="msg" id="joinMsg" role="status"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><a href="#top">Twitch</a><a href="#top">YouTube</a><a href="#top">Discord</a><a href="#top">TikTok</a></p>
+    <p>© 2026 Lardre. Business inquiries: hello@lardre.example</p>
+  </div>
+</footer>
+
+<script>
+// Animated counters
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const end=+el.dataset.count,t0=performance.now(),dur=1400;
+  (function tick(t){
+    const p=Math.min((t-t0)/dur,1);
+    el.textContent=Math.round(end*(1-Math.pow(1-p,3))).toLocaleString();
+    if(p<1)requestAnimationFrame(tick);
+  })(t0);
+});
+
+// Chat simulator
+const names=[['NovaShot','#ff4fa3'],['ByteBard','#35e0ff'],['GlitchQueen','#ffd23f'],['xX_Zed_Xx','#9d8bff'],['MiloPlays','#5cffb0'],['TankTop','#ff8a4f']];
+const lines=['that flick was INSANE','GG','clutch incoming??','chat, we believe','nice rotate','lol the whiff','first time here, love the vibe','play the ranked one next!','POG','that’s diamond energy','she’s cooking','refund the enemy team','audio is perfect today'];
+const chat=document.getElementById('chat');
+function addMsg(n,c,text){
+  const p=document.createElement('p');
+  const b=document.createElement('b');b.style.color=c;b.textContent=n+':';
+  p.append(b,document.createTextNode(text));
+  chat.appendChild(p);
+  while(chat.children.length>11)chat.firstChild.remove();
+}
+function randomMsg(){
+  const [n,c]=names[Math.floor(Math.random()*names.length)];
+  addMsg(n,c,lines[Math.floor(Math.random()*lines.length)]);
+}
+for(let i=0;i<6;i++)randomMsg();
+setInterval(randomMsg,1700);
+document.getElementById('sayForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const i=document.getElementById('sayInput'),v=i.value.trim();
+  if(v){addMsg('You','#f5f2ff',v);i.value='';}
+});
+let v=1284;
+setInterval(()=>{v+=Math.floor(Math.random()*15)-6;document.getElementById('viewers').textContent=v.toLocaleString()+' watching';},2500);
+
+// Schedule
+const days=[['Mon',null],['Tue',['7:00 PM','Ranked grind']],['Wed',['6:00 PM','Variety night']],['Thu',['7:00 PM','Ranked grind']],['Fri',['8:00 PM','Chat’s Choice']],['Sat',['3:00 PM','Viewer scrims']],['Sun',['9:00 PM','Co-op horror']]];
+const todayIdx=(new Date().getDay()+6)%7;
+const sched=document.getElementById('sched');
+days.forEach(([d,s],i)=>{
+  const el=document.createElement('div');
+  el.className='day'+(i===todayIdx?' today':'')+(s?'':' off');
+  el.innerHTML='<h3></h3>'+(s?'<strong></strong><span></span>':'<span>Rest day</span>');
+  el.querySelector('h3').textContent=d+(i===todayIdx?' (today)':'');
+  if(s){el.querySelector('strong').textContent=s[0];el.querySelector('span').textContent=s[1];}
+  sched.appendChild(el);
+});
+
+// Countdown to next stream
+const times=[null,[19,0],[18,0],[19,0],[20,0],[15,0],[21,0]];
+function nextStream(){
+  const now=new Date();
+  for(let k=0;k<8;k++){
+    const d=new Date(now);d.setDate(now.getDate()+k);
+    const t=times[(d.getDay()+6)%7];
+    if(!t)continue;
+    d.setHours(t[0],t[1],0,0);
+    if(d>now)return d;
+  }
+}
+function updateNext(){
+  const d=nextStream(),ms=d-new Date();
+  const h=Math.floor(ms/36e5),m=Math.floor(ms%36e5/6e4),s=Math.floor(ms%6e4/1e3);
+  document.getElementById('next').innerHTML='Next stream starts in <b>'+h+'h '+String(m).padStart(2,'0')+'m '+String(s).padStart(2,'0')+'s</b>';
+}
+updateNext();setInterval(updateNext,1000);
+
+// Email signup (demo only, nothing is sent)
+document.getElementById('joinForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const val=document.getElementById('email-in').value;
+  document.getElementById('joinMsg').textContent='You’re in! Go-live alerts will be sent to '+val+'.';
+  e.target.reset();
+});
+</script>
+</body>
+</html>
